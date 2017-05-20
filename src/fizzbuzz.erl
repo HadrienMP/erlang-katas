@@ -15,7 +15,7 @@
 
 fizzbuzz(X) -> fizzbuzz(X, "", "").
 
-fizzbuzz(X, _, Buzz) when X rem 3 =:= 0 -> fizzbuzz(X div 3, "fizz", Buzz);
-fizzbuzz(X, Fizz, _) when X rem 5 =:= 0 -> fizzbuzz(X div 5, Fizz, "buzz");
-fizzbuzz(X, "", "") -> erlang:integer_to_list(X);
+fizzbuzz(X, "", Buzz) when X rem 3 =:= 0 -> fizzbuzz(X div 3, "fizz", Buzz);
+fizzbuzz(X, Fizz, "") when X rem 5 =:= 0 -> fizzbuzz(X div 5, Fizz, "buzz");
+fizzbuzz(X, "", "") -> X;
 fizzbuzz(_, Fizz, Buzz) -> Fizz ++ Buzz.
