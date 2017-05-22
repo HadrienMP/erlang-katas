@@ -15,7 +15,7 @@
 
 fizzbuzz(X) -> fizzbuzz(X, "", "").
 
-fizzbuzz(X, "", Buzz) when X rem 3 =:= 0 -> fizzbuzz(X div 3, "fizz", Buzz);
-fizzbuzz(X, Fizz, "") when X rem 5 =:= 0 -> fizzbuzz(X div 5, Fizz, "buzz");
+fizzbuzz(X, "", Buzz) when X rem 3 =:= 0 -> fizzbuzz(X, "fizz", Buzz);
+fizzbuzz(X, Fizz, "") when X rem 5 =:= 0 -> fizzbuzz(X, Fizz, "buzz");
 fizzbuzz(X, "", "") -> X;
 fizzbuzz(_, Fizz, Buzz) -> Fizz ++ Buzz.
