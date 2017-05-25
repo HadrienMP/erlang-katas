@@ -6,7 +6,7 @@
 %%% @end
 %%% Created : 20. mai 2017 11:57
 %%%-------------------------------------------------------------------
--module(fizzbuzz_should).
+-module(fizzbuzz_tests).
 -author("hadrienmp").
 -include_lib("eunit/include/eunit.hrl").
 
