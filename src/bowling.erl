@@ -12,16 +12,19 @@
 %% API
 -export([score/1]).
 
+-define(STRIKE, 10).
+-define(is_spare(First, Second), First + Second == ?STRIKE).
+
 score(Rolls) -> frame_score(Rolls) + bonus(Rolls) + tail_score(Rolls).
 
-frame_score([10 | _]) -> 10;
+frame_score([?STRIKE | _]) -> ?STRIKE;
 frame_score([First, Second | _]) -> First + Second.
 
-bonus([10, FirstBonus, SecondBonus | _]) -> FirstBonus + SecondBonus;
-bonus([First , Second, Bonus | _]) when First + Second == 10 -> Bonus;
+bonus([?STRIKE, FirstBonus, SecondBonus | _]) -> FirstBonus + SecondBonus;
+bonus([First , Second, Bonus | _]) when ?is_spare(First, Second) -> Bonus;
 bonus(_) -> 0.
 
 tail_score([_, _]) -> 0;
 tail_score([_, _, _]) -> 0;
-tail_score([10 | Tail]) -> score(Tail);
+tail_score([?STRIKE | Tail]) -> score(Tail);
 tail_score([_ , _ | Tail]) -> score(Tail).
