@@ -15,13 +15,13 @@
 score(Rolls) -> frame_score(Rolls) + bonus(Rolls) + tail_score(Rolls).
 
 frame_score([10 | _]) -> 10;
-frame_score([First | [Second | _]]) -> First + Second.
+frame_score([First, Second | _]) -> First + Second.
 
-bonus([10 | Tail]) -> lists:nth(1, Tail) + lists:nth(2, Tail);
-bonus([First | [Second | Tail]]) when First + Second == 10 -> lists:nth(1, Tail);
+bonus([10, FirstBonus, SecondBonus | Tail]) -> FirstBonus, SecondBonus;
+bonus([First , Second, Bonus | Tail]) when First + Second == 10 -> Bonus;
 bonus(_) -> 0.
 
 tail_score([_, _]) -> 0;
 tail_score([_, _, _]) -> 0;
 tail_score([10 | Tail]) -> score(Tail);
-tail_score([_ | [_ | Tail]]) -> score(Tail).
+tail_score([_ , _ | Tail]) -> score(Tail).
