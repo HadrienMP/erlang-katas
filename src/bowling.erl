@@ -17,8 +17,8 @@ score(Rolls) -> frame_score(Rolls) + bonus(Rolls) + tail_score(Rolls).
 frame_score([10 | _]) -> 10;
 frame_score([First, Second | _]) -> First + Second.
 
-bonus([10, FirstBonus, SecondBonus | Tail]) -> FirstBonus, SecondBonus;
-bonus([First , Second, Bonus | Tail]) when First + Second == 10 -> Bonus;
+bonus([10, FirstBonus, SecondBonus | _]) -> FirstBonus + SecondBonus;
+bonus([First , Second, Bonus | _]) when First + Second == 10 -> Bonus;
 bonus(_) -> 0.
 
 tail_score([_, _]) -> 0;
