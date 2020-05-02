@@ -26,4 +26,4 @@ performance_test() ->
   Target = erlang:trunc(math:pow(3,9)*math:pow(5,9)*2),
   {_, Time} = utils:time(fun fizzbuzz:fizzbuzz/1, Target),
   io:fwrite("Time spent : ~w~n", [Time]),
-  ?assert(Time < 2000).
+  ?assert(Time < 3000).
