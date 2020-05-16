@@ -22,8 +22,3 @@ return_buzz_for_10_test() -> ?assertEqual("buzz", fizzbuzz:fizzbuzz(10)).
 return_fizzbuzz_for_15_test() -> ?assertEqual("fizzbuzz", fizzbuzz:fizzbuzz(3*5)).
 return_fizzbuzz_for_30_test() -> ?assertEqual("fizzbuzz", fizzbuzz:fizzbuzz(2*3*5)).
 
-performance_test() ->
-  Target = erlang:trunc(math:pow(3,9)*math:pow(5,9)*2),
-  {_, Time} = utils:time(fun fizzbuzz:fizzbuzz/1, Target),
-  io:fwrite("Time spent : ~w~n", [Time]),
-  ?assert(Time < 3000).
