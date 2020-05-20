@@ -1,6 +1,7 @@
 -module(mastermind_test).
 
 -include_lib("eunit/include/eunit.hrl").
+-import(mastermind, [compare/2]).
 
 %% API
 -export([]).
@@ -37,39 +38,3 @@
 'color at mutliple wrong places_test'() ->
     ?assertMatch([_, 2], compare([red, teal, green], [teal, orange, teal])).
 
-%% COMPARE
-compare(Guess, Secret) -> [rightPlace(Guess, Secret), countWrongPlaces(Guess, Secret)].
-
-%% EXACT MATCHES
-rightPlace(Guess, Secret) -> rightPlace(0, Guess, Secret).
-
-rightPlace(Matches, [], []) -> Matches;
-rightPlace(Matches, [Color | Guess], [Color | Secret]) -> rightPlace(Matches + 1, Guess, Secret);
-rightPlace(Matches, [_ | Guess], [_ | Secret]) -> rightPlace(Matches, Guess, Secret).
-
-%% MATCHES
-countWrongPlaces(Guess, Secret) -> 
-    Indexs = lists:seq(0, length(Guess) - 1),
-    FoldFunc = fun(Index, Acc) -> Acc + countWrongPlaces(Index, Guess, Secret) end,
-    lists:foldr(FoldFunc, 0, Indexs).
-
-countWrongPlaces(Index, Guess, Secret) -> 
-    Color = colorAt(Index, Guess),
-    countOccurences(Color, remove(Index, Secret)).
-
-colorAt(Index, Colors) -> lists:nth(Index + 1, Colors).
-
-%% COUNT OCCURENCES
-countOccurences(Color, List) -> countOccurences(Color, List, 0).
-countOccurences(_, [], Occurences) -> Occurences;
-countOccurences(Color, [Color | List], Occurences) -> 
-    countOccurences(Color, List, Occurences + 1);
-countOccurences(Color, [_ | List], Occurences) -> 
-    countOccurences(Color, List, Occurences).
-
-%% REMOVE FROM LIST
-remove(Index, List) -> remove(Index, 0, [], List).
-
-remove(Index, Index, Beginning, [_ | End]) -> Beginning ++ End;
-remove(Index, CurrIndex, Beginning, [CurrEl | End]) -> 
-    remove(Index, CurrIndex + 1, Beginning ++ [CurrEl], End).
