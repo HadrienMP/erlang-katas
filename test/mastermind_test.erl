@@ -30,10 +30,12 @@
      ?assertMatch([_, 1], compare([red, green, teal], [green, yellow, orange])),
      ?assertMatch([_, 1], compare([red, green, teal], [orange, yellow, green]))
     ].
-%'third color_test'() -> 
-%    [
-%     ?assertMatch([_, 1], compare([red, teal, green], [green, orange, yellow]))
-%    ].
+'third color_test'() -> 
+    [
+     ?assertMatch([_, 1], compare([red, teal, green], [green, orange, yellow]))
+    ].
+'color at mutliple wrong places_test'() ->
+    ?assertMatch([_, 2], compare([red, teal, green], [teal, orange, teal])).
 
 %% COMPARE
 compare(Guess, Secret) -> [rightPlace(Guess, Secret), countWrongPlaces(Guess, Secret)].
@@ -52,13 +54,18 @@ countWrongPlaces(Guess, Secret) ->
     lists:foldr(FoldFunc, 0, Indexs).
 
 countWrongPlaces(Index, Guess, Secret) -> 
-    countOccurences(colorAt(Index, Guess), remove(Index, Secret)).
-
-countOccurences(_, []) -> 0;
-countOccurences(Color, [Color | _]) -> 1;
-countOccurences(Color, [_ | Secret]) -> countOccurences(Color, Secret).
+    Color = colorAt(Index, Guess),
+    countOccurences(Color, remove(Index, Secret)).
 
 colorAt(Index, Colors) -> lists:nth(Index + 1, Colors).
+
+%% COUNT OCCURENCES
+countOccurences(Color, List) -> countOccurences(Color, List, 0).
+countOccurences(_, [], Occurences) -> Occurences;
+countOccurences(Color, [Color | List], Occurences) -> 
+    countOccurences(Color, List, Occurences + 1);
+countOccurences(Color, [_ | List], Occurences) -> 
+    countOccurences(Color, List, Occurences).
 
 %% REMOVE FROM LIST
 remove(Index, List) -> remove(Index, 0, [], List).
