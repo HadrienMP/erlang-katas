@@ -52,11 +52,11 @@ countWrongPlaces(Guess, Secret) ->
     lists:foldr(FoldFunc, 0, Indexs).
 
 countWrongPlaces(Index, Guess, Secret) -> 
-    matchColor(colorAt(Index, Guess), remove(Index, Secret)).
+    countOccurences(colorAt(Index, Guess), remove(Index, Secret)).
 
-matchColor(_, []) -> 0;
-matchColor(Color, [Color | _]) -> 1;
-matchColor(Color, [_ | Secret]) -> matchColor(Color, Secret).
+countOccurences(_, []) -> 0;
+countOccurences(Color, [Color | _]) -> 1;
+countOccurences(Color, [_ | Secret]) -> countOccurences(Color, Secret).
 
 colorAt(Index, Colors) -> lists:nth(Index + 1, Colors).
 
