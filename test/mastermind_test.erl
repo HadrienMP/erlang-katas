@@ -24,22 +24,45 @@
      ?assertMatch([_, 1], compare([red, green], [yellow, red]))
     ].
 
+'second color_test'() -> 
+    [
+     ?assertMatch([_, 1], compare([red, green], [green, yellow])),
+     ?assertMatch([_, 1], compare([red, green, teal], [green, yellow, orange])),
+     ?assertMatch([_, 1], compare([red, green, teal], [orange, yellow, green]))
+    ].
+%'third color_test'() -> 
+%    [
+%     ?assertMatch([_, 1], compare([red, teal, green], [green, orange, yellow]))
+%    ].
+
 %% COMPARE
-compare(Guess, Secret) -> [exact_matches(Guess, Secret), matches(Guess, Secret)].
+compare(Guess, Secret) -> [rightPlace(Guess, Secret), countWrongPlaces(Guess, Secret)].
 
 %% EXACT MATCHES
-exact_matches(Guess, Secret) -> exact_matches(0, Guess, Secret).
+rightPlace(Guess, Secret) -> rightPlace(0, Guess, Secret).
 
-exact_matches(Matches, [], []) -> Matches;
-exact_matches(Matches, [Color | Guess], [Color | Secret]) -> exact_matches(Matches + 1, Guess, Secret);
-exact_matches(Matches, [_ | Guess], [_ | Secret]) -> exact_matches(Matches, Guess, Secret).
+rightPlace(Matches, [], []) -> Matches;
+rightPlace(Matches, [Color | Guess], [Color | Secret]) -> rightPlace(Matches + 1, Guess, Secret);
+rightPlace(Matches, [_ | Guess], [_ | Secret]) -> rightPlace(Matches, Guess, Secret).
 
 %% MATCHES
-matches(Guess, Secret) -> matches(0, Guess, Secret).
+countWrongPlaces(Guess, Secret) -> 
+    Indexs = lists:seq(0, length(Guess) - 1),
+    FoldFunc = fun(Index, Acc) -> Acc + countWrongPlaces(Index, Guess, Secret) end,
+    lists:foldr(FoldFunc, 0, Indexs).
 
-matches(_, [Color | _], [_ | Secret]) -> matchColor(Color, Secret).
+countWrongPlaces(Index, Guess, Secret) -> 
+    matchColor(colorAt(Index, Guess), remove(Index, Secret)).
 
 matchColor(_, []) -> 0;
 matchColor(Color, [Color | _]) -> 1;
 matchColor(Color, [_ | Secret]) -> matchColor(Color, Secret).
 
+colorAt(Index, Colors) -> lists:nth(Index + 1, Colors).
+
+%% REMOVE FROM LIST
+remove(Index, List) -> remove(Index, 0, [], List).
+
+remove(Index, Index, Beginning, [_ | End]) -> Beginning ++ End;
+remove(Index, CurrIndex, Beginning, [CurrEl | End]) -> 
+    remove(Index, CurrIndex + 1, Beginning ++ [CurrEl], End).
